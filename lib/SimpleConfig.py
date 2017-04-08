@@ -2,9 +2,9 @@
 class SimpleConfig(object):
 
     def __init__(self, file_list):
-        self.generate(file_list)
+        self._generate(file_list)
 
-    def generate(self, file_list):
+    def _generate(self, file_list):
         self.data = {}
 
         for fname in file_list:
@@ -21,7 +21,7 @@ class SimpleConfig(object):
                     if len(key) < 1:
                         continue
 
-                    self.data[key] = value || ''
+                    self.data[key] = value or ''
             except Exception:
                 pass
 

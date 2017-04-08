@@ -1,24 +1,25 @@
 import RPi.GPIO as GPIO
 import time
 
+
 class PumpController(object):
-    
+
     def __init__(self, config):
-        self.initialize(config)
+        self._initialize(config)
     
-    def initialize(self, config):
-        self.onCycle = config.get('pump.on_interval.seconds', 2700)
-        self.offCycle = config.get('pump.off_interval.seconds', 900)
+    def _initialize(self, config):
+        self.onCycle = config.getInt('pump.on_interval.seconds', 2700)
+        self.offCycle = config.getInt('pump.off_interval.seconds', 900)
         self.outPin = config.get('pump.output_board_pin')
 
         self.totalCycle = self.onCycle + self.offCycle;
 
-        if (GPIO.getmode() == None):
+        if GPIO.getmode() is None:
             raise Exception("GPIO mode not initialized")
         try:
             GPIO.cleanup(self.outPin)
         except:
-            pass # need to do for reinit, so don't bother with exceptions
+            pass  # need to do for reinit, so don't bother with exceptions
 
         GPIO.setup(self.outPin, GPIO.OUT)
 
