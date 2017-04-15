@@ -42,3 +42,14 @@ class SimpleConfig(object):
         except ValueError:
             return default
 
+    def getBool(self, key, default=None):
+        value = self.data.get(key, default)
+        if not value:
+            return default
+        elif value == 'True':
+            return True
+        elif value == 'False':
+            return False
+        else:
+            return default
+

@@ -27,7 +27,7 @@ class LightController(object):
 
         testTime = currTime.hour * 100 + currTime.minute
 
-        # there is a shitty inherent assumption that on Time is less than off Time, FIXME
+        # FIXME: there is a shitty inherent assumption that lights should be on during the day
         if self.lastState == 'off' and testTime > self.onTime and testTime < self.offTime:
             GPIO.output(self.outPin, GPIO.HIGH)
             self.lastState = 'on'
