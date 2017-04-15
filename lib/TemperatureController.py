@@ -4,6 +4,7 @@ import glob
 import time
 import RPi.GPIO as GPIO
 
+
 class TemperatureController(object):
     def __init__(self, config):
         # TODO: there has to be another way this is horrible
@@ -17,7 +18,7 @@ class TemperatureController(object):
         self.errorMargin = config.getInt('temp.error.margin', 2)
         self.heatOutPin = config.get('temp.heat.output_board_pin')
         self.coolOutPin = config.get('temp.cool.output_board_pin')
-        self.basedir = config.get('temp.sensor.basedir', '/sys/bus/w1/devices')
+        self.basedir = config.get('temp.sensor.basedir', '/sys/bus/w1/devices/')
         self.runPID = config.getBool('temp.runpid', False)
 
         self.errorSum = 0
@@ -55,13 +56,13 @@ class TemperatureController(object):
             GPIO.output(self.heatOutPin, GPIO.LOW)
             GPIO.output(self.coolOutPin, GPIO.HIGH)
 
-    def getTemp(self):
+    def getTemp(self, device_list=None):
         total_temp = 0
         count = 0
-        temp_devices = glob.glob(self.basedir + 'w8*')
+        temp_devices = device_list or glob.glob(self.basedir + '28*')
         for device in temp_devices:
 
-            lines = self.getRawLines(device)
+            lines = self.getRawLines(device + "/w1_slave")
             while lines[0].find('YES') == -1:
                 time.sleep(0.2)
                 lines = self.getRawLines(device)
