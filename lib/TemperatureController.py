@@ -16,8 +16,8 @@ class TemperatureController(object):
     def _initialize(self, config):
         self.setPoint = config.getInt('temp.setpoint', 70)
         self.errorMargin = config.getInt('temp.error.margin', 2)
-        self.heatOutPin = config.get('temp.heat.output_board_pin')
-        self.coolOutPin = config.get('temp.cool.output_board_pin')
+        self.heatOutPin = config.getInt('temp.heat.output_board_pin')
+        self.coolOutPin = config.getInt('temp.cool.output_board_pin')
         self.basedir = config.get('temp.sensor.basedir', '/sys/bus/w1/devices/')
         self.runPID = config.getBool('temp.runpid', False)
 

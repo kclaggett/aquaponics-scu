@@ -9,7 +9,7 @@ class LightController(object):
     def _initialize(self, config):
         self.onTime = config.getInt('lights.ontime', 0730)
         self.offTime = config.getInt('lights.offtime', 1930)
-        self.outPin = config.get('lights.output_board_pin')
+        self.outPin = config.getInt('lights.output_board_pin')
 
         if GPIO.getmode() is None:
             raise Exception("GPIO mode not initialized")
@@ -34,3 +34,4 @@ class LightController(object):
         elif self.lastState == 'on' and (testTime > self.offTime or testTime < self.onTime):
             GPIO.output(self.outPin, GPIO.LOW)
             self.lastState = 'off'
+

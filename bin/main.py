@@ -5,6 +5,8 @@ from time import sleep
 import os
 sys.path.append(os.path.abspath('..'))
 
+import RPi.GPIO as GPIO
+
 import SimpleConfig
 import LightController
 import PumpController
@@ -13,7 +15,10 @@ import TemperatureController
 print "Starting Aquaponics System \n"
 print "\n"
 
-config = SimpleConfig.SimpleConfig('/home/pi/aquaponics-scu/config/aquaponics.cfg')
+config = SimpleConfig.SimpleConfig(['/home/pi/aquaponics-scu/config/aquaponics.cfg'])
+
+# Set GPIO mode
+GPIO.setmode(GPIO.BOARD)
 
 pumps = PumpController.PumpController(config)
 lights = LightController.LightController(config)
@@ -34,4 +39,5 @@ while 1:
     current_temp = temp.getTemp()
     print "Completed loop: {} Current Temp detected: {} \n".format(count, current_temp)
     print "Sleeping 60 seconds before next loop"
+    count += 1
     sleep(60)

@@ -10,7 +10,7 @@ class PumpController(object):
     def _initialize(self, config):
         self.onCycle = config.getInt('pump.on_interval.seconds', 2700)
         self.offCycle = config.getInt('pump.off_interval.seconds', 900)
-        self.outPin = config.get('pump.output_board_pin')
+        self.outPin = config.getInt('pump.output_board_pin')
 
         self.totalCycle = self.onCycle + self.offCycle;
 
