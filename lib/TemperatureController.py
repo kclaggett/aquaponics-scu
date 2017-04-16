@@ -39,7 +39,9 @@ class TemperatureController(object):
             pass  # need to do for reinit, so don't bother with exceptions
 
         GPIO.setup(self.heatOutPin, GPIO.OUT)
+        GPIO.output(self.heatOutPin, GPIO.LOW)
         GPIO.setup(self.coolOutPin, GPIO.OUT)
+        GPIO.output(self.coolOutPin, GPIO.LOW)
 
     def runModule(self):
         currTemp = self.getTemp()

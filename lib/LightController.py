@@ -20,6 +20,7 @@ class LightController(object):
             pass  # need to do for reinit, so don't bother with exceptions
 
         GPIO.setup(self.outPin, GPIO.OUT)
+        GPIO.output(self.outPin, GPIO.LOW)
         self.lastState = 'off'
 
     def runModule(self):

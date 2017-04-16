@@ -22,7 +22,8 @@ class PumpController(object):
             pass  # need to do for reinit, so don't bother with exceptions
 
         GPIO.setup(self.outPin, GPIO.OUT)
-
+        GPIO.output(self.outPin, GPIO.LOW)
+                 
         self.lastChange = 0
         self.lastState = 'off'
 
