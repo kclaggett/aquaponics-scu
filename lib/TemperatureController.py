@@ -92,6 +92,11 @@ class TemperatureController(object):
                     total_temp_water += temp_f
                     count_water += 1
 
+        if count_water < 1:
+            count_water = 1
+        if count_air < 1:
+            count_air = 1
+
         return total_temp_water / count_water, total_temp_air / count_air
 
     def getRawLines(self, filename):
