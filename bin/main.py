@@ -53,6 +53,8 @@ def setup_logger(config):
 
     path = config.get("logdir", '/home/pi/aquaponics-scu/logs/aquaponics.log')
     rotating_handler = RotatingFileHandler(path, maxBytes=20000000, backupCount=10)
+    basic_formatter = logging.Formatter('%(asctime)s | %(levelname)s | %(message)s')
+    rotating_handler.setFormatter(basic_formatter)
     logger.addHandler(rotating_handler)
 
     return logger
