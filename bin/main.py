@@ -51,7 +51,7 @@ def setup_logger(config):
     logger = logging.getLogger("basiclogger")
     logger.setLevel(logging.INFO)
 
-    path = config.get("logdir", '/home/pi/aquaponics-scu/logs')
+    path = config.get("logdir", '/home/pi/aquaponics-scu/logs/aquaponics.log')
     rotating_handler = RotatingFileHandler(path, maxBytes=20000000, backupCount=10)
     logger.addHandler(rotating_handler)
 
