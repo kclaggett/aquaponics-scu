@@ -44,23 +44,32 @@ class TemperatureController(object):
         GPIO.output(self.coolOutPin, GPIO.LOW)
 
     def runModule(self):
-        currTemp = self.getTemp()
+        waterTemp, airTemp = self.getTemp()
+        print "water temp: {} air temp: {}\n".format(waterTemp, airTemp)
 
-        error = self.setPoint - currTemp
+        water_error = self.setPoint - waterTemp
+        air_error = self.setPoint - airTemp
 
-        if self.runPID:
-            error = self.getPIDValue(error)
+# Maybe Someday...
+#        if self.runPID:
+#            error = self.getPIDValue(error)
 
-        if abs(error) > self.errorMargin and error < 0:
+        if (abs(water_error) > self.errorMargin and water_error > 0) or (abs(water_error) < self.errorMargin and abs(air_error) > self.errorMargin and air_error > 0):
             GPIO.output(self.heatOutPin, GPIO.HIGH)
-            GPIO.output(self.coolOutPin, GPIO.LOW)
-        elif abs(error) > self.errorMargin and error > 0:
+        else:
             GPIO.output(self.heatOutPin, GPIO.LOW)
-            GPIO.output(self.coolOutPin, GPIO.HIGH)
 
+        if (abs(air_error) > self.errorMargin and air_error < 0) or (abs(air_error) < self.errorMargin and abs(water_error) > self.errorMargin and water_error < 0):
+            GPIO.output(self.coolOutPin, GPIO.HIGH)
+        else:
+            GPIO.output(self.coolOutPin, GPIO.LOW)
+            
     def getTemp(self, device_list=None):
-        total_temp = 0
-        count = 0
+        total_temp_water = 0
+        total_temp_air = 0
+        count_water = 0
+        count_air = 0
+
         temp_devices = device_list or glob.glob(self.basedir + '28*')
         for device in temp_devices:
 
@@ -74,10 +83,16 @@ class TemperatureController(object):
                 temp_string = lines[1][equals_pos + 2:]
                 temp_c = float(temp_string) / 1000.0
                 temp_f = temp_c * 9.0 / 5.0 + 32.0
-                total_temp += temp_f
-                count += 1
 
-        return total_temp / count
+                # FIXME horrible horrible hack
+                if "28-000008a3d594" in device: 
+                    total_temp_air += temp_f
+                    count_air += 1
+                else:
+                    total_temp_water += temp_f
+                    count_water += 1
+
+        return total_temp_water / count_water, total_temp_air / count_air
 
     def getRawLines(self, filename):
         f = open(filename, 'r')

@@ -39,8 +39,7 @@ def main():
         lights.runModule()
         sleep(1)
         temp.runModule()
-        current_temp = temp.getTemp()
-        print "Completed loop: {} Current Temp detected: {} \n".format(count, current_temp)
+        print "Completed loop: {} \n".format(count)
         print "Sleeping 60 seconds before next loop"
         count += 1
         sleep(60)
